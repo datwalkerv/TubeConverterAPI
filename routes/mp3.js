@@ -109,8 +109,6 @@ router.get('/advanced/:link', async (req, res) => {
 
     const getYTData = await fetch(`https://y.com.sb/api/v1/videos/${link}`)
     const ytData = await getYTData.json();
-    console.log(ytData)
-    console.log(ytData.title, ytData.description, ytData.published, ytData.viewCount, ytData.author, ytData.authorId, ytData.subCountText, ytData.lengthSeconds)
 
     let output = {
         hh: {
