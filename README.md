@@ -4,7 +4,7 @@
     <a href="https://github.com/datwalkerv/TubeConverterAPI/blob/main/LICENSE" target="_blank">
         <img src="https://img.shields.io/github/license/datwalkerv/TubeConverterAPI" alt="license">
     </a>
-    <a href="https://github.com/dicebear/avatars/stargazers" target="_blank">
+    <a href="https://github.com/datwalkerv/TubeConverterAPI/stargazers" target="_blank">
         <img src="https://img.shields.io/github/stars/datwalkerv/TubeConverterAPI" alt="stars">
     </a>
 </p>
