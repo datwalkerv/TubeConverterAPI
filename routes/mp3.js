@@ -79,8 +79,10 @@ router.get('/:link', async (req, res) => {
     res.json({
         status: 200,
         message: "made with <3 by @datwalkerv",
-        links: output
-    })
+        links: output, 
+        thumbnail: `https://img.youtube.com/vi/${link}/maxresdefault.jpg`
+    }) 
+    
 })
 
 router.get('/advanced/:link', async (req, res) => {
@@ -168,7 +170,8 @@ router.get('/advanced/:link', async (req, res) => {
             link: `https://www.youtube.com/channel/${ytData.authorId}`,
             subscribers: ytData.subCountText,
         },
-        length: ytData.lengthSeconds
+        length: ytData.lengthSeconds,
+        thumbnail: `https://img.youtube.com/vi/${link}/maxresdefault.jpg`
     })
 })
 
