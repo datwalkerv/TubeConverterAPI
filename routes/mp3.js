@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const fetch = require('node-fetch')
-const FormData = require('form-data')
+const cheerio = require("cheerio");
+const axios = require("axios");
 
 router.get('/', (req, res) => {
     res.status(406).json({
@@ -18,19 +18,13 @@ router.get('/:link', async (req, res) => {
 
     if(linkIsValid === null || linkIsValid[2].length != 11) return res.status(406).json({status: 406, message: "Invalid link!"})
 
-    const formData = new FormData()
-    formData.append('type', 'mp3')
-    formData.append('search_txt', fullLink)
-
-    const getRawData = await fetch('https://www.bestmp3converter.com/models/convertProcess.php', {method: 'POST', body: formData})
-    const rawData = await getRawData.text()
-    let breakedRawData = rawData.trim().split(" ")
-    let links = [], sizes = []
-
-    for(let i=0; i<breakedRawData.length; i++){
-        if(breakedRawData[i].includes("data-link")) links.push(breakedRawData[i].substring(breakedRawData[i].indexOf('"')+1, breakedRawData[i].lastIndexOf('"')))
-        if(breakedRawData[i].includes("data-size")) sizes.push(`${breakedRawData[i]}${breakedRawData[i+1]}`.substring(`${breakedRawData[i]}${breakedRawData[i+1]}`.indexOf('"')+1, `${breakedRawData[i]}${breakedRawData[i+1]}`.lastIndexOf('"')))
-    }
+    const getRawData = await axios.get(`https://api.vevioz.com/api/button/mp3/${link}`)
+    const $ = cheerio.load(getRawData.data)
+    const scrapeLinks = $("a"), links = [], sizes = [];
+    scrapeLinks.each((index, value) => {
+        links.push($(value).attr('href'));
+        sizes.push($(value).find('.text-shadow-1').text().substring($(value).find('.text-shadow-1').text().indexOf('s')+1));
+    })
 
     if(!links.length) return res.status(406).json({status: 406, message: "Invalid link!"})
 
@@ -93,24 +87,18 @@ router.get('/advanced/:link', async (req, res) => {
 
     if(linkIsValid === null || linkIsValid[2].length != 11) return res.status(406).json({status: 406, message: "Invalid link!"})
 
-    const formData = new FormData()
-    formData.append('type', 'mp3')
-    formData.append('search_txt', fullLink)
-
-    const getRawData = await fetch('https://www.bestmp3converter.com/models/convertProcess.php', {method: 'POST', body: formData})
-    const rawData = await getRawData.text()
-    let breakedRawData = rawData.trim().split(" ")
-    let links = [], sizes = []
-
-    for(let i=0; i<breakedRawData.length; i++){
-        if(breakedRawData[i].includes("data-link")) links.push(breakedRawData[i].substring(breakedRawData[i].indexOf('"')+1, breakedRawData[i].lastIndexOf('"')))
-        if(breakedRawData[i].includes("data-size")) sizes.push(`${breakedRawData[i]}${breakedRawData[i+1]}`.substring(`${breakedRawData[i]}${breakedRawData[i+1]}`.indexOf('"')+1, `${breakedRawData[i]}${breakedRawData[i+1]}`.lastIndexOf('"')))
-    }
+    const getRawData = await axios.get(`https://api.vevioz.com/api/button/mp3/${link}`)
+    const $ = cheerio.load(getRawData.data)
+    const scrapeLinks = $("a"), links = [], sizes = [];
+    scrapeLinks.each((index, value) => {
+        links.push($(value).attr('href'));
+        sizes.push($(value).find('.text-shadow-1').text().substring($(value).find('.text-shadow-1').text().indexOf('s')+1));
+    })
 
     if(!links.length) return res.status(406).json({status: 406, message: "Invalid link!"})
 
-    const getYTData = await fetch(`https://y.com.sb/api/v1/videos/${link}`)
-    const ytData = await getYTData.json();
+    const getYTData = await axios.get(`https://y.com.sb/api/v1/videos/${link}`)
+    const ytData = await getYTData.data
 
     let output = {
         hh: {
@@ -170,7 +158,7 @@ router.get('/advanced/:link', async (req, res) => {
         },
         length: ytData.lengthSeconds,
         thumbnail: `https://img.youtube.com/vi/${link}/maxresdefault.jpg`
-    })
+    }) 
 })
 
 module.exports = router

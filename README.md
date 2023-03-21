@@ -42,6 +42,6 @@
 - [ ] MP4 support
 
 ## Terms of Use & Privacy Policy
-This API use [bestmp3converter](https://www.bestmp3converter.com/) and removes ads, trackers from their API response. <br>
-The same [terms of use](https://www.bestmp3converter.com/terms/) & [privacy policy](https://www.bestmp3converter.com/privacy/) apply to TubeConverter. <br>
+This API use [vevioz](https://www.vevioz.com/) and removes ads, trackers from their API response. <br>
+The same [terms of use](https://www.vevioz.com/terms/terms) & [privacy policy](https://www.vevioz.com/terms/privacy-policy) apply to TubeConverter. <br>
 Also TubeConverter use [Invidious API](https://docs.invidious.io/api/) for youtube requests.
